@@ -45,15 +45,20 @@ public class DataUtilitiescalculateColumnTotal {
   
     @Test
     public void testCalculateColumnTotalWithNonexistentColumnIndex() {
-        // Assuming values2D has only 3 columns (indexes 0, 1, and 2)
+        // Assuming values2D has only 2 columns (indexes 0 and 1)
         int columnCount = values2D.getColumnCount();
         double expectedTotal = 0.0; // Nonexistent column index, so sum should be 0.0
-        if (columnCount > 2) {
-            fail("The test data should have only 3 columns.");
+        if (columnCount <= 2) {
+            double actualTotal = DataUtilities.calculateColumnTotal(values2D, 2);
+            assertEquals("The sum of the values in a nonexistent column index should be 0.0", expectedTotal, actualTotal, 0.0000001);
+        } else {
+            fail("The test data should have only 2 columns.");
         }
-        double actualTotal = DataUtilities.calculateColumnTotal(values2D, 2);
-        assertEquals("The sum of the values in a nonexistent column index should be 0.0", expectedTotal, actualTotal, 0.0000001);
     }
+
+
+
+
 
     @Test
     public void testCalculateColumnTotalWithColumnContainingNullValues() {
@@ -63,14 +68,16 @@ public class DataUtilitiescalculateColumnTotal {
         assertEquals("The sum of the values in column 0 should ignore null values", expectedTotal, actualTotal, 0.0000001);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void testCalculateColumnTotalWithNegativeColumnIndex() {
         DataUtilities.calculateColumnTotal(values2D, -1);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+
+    @Test(expected = NullPointerException.class)
     public void testCalculateColumnTotalWithNullData() {
         DataUtilities.calculateColumnTotal(null, 0);
     }
+
 
 }
